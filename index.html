@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Upload Gambar, Teks dan Hapus Area Teks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+        }
+        nav {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: #4CAF50;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #e4e4e4;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: #d4d4d4;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .text-area-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .text-area-section input, .text-area-section button {
+            margin-top: 10px;
+        }
+        #uploadedImage {
+            max-width: 100%;
+            max-height: 300px;
+            display: block;
+            margin-top: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 style="display: none;">Website Upload Gambar, Teks dan Hapus Area Teks</h1>
+</header>
+
+<nav>
+    <!-- Menghapus bagian ini karena sudah tidak ada lagi judul "Buat Area Teks" -->
+</nav>
+
+<div id="text-section" class="section">
+    <button onclick="createTextAreaSection()">Buat Area Teks Baru</button>
+</div>
+
+<script>
+    // Fungsi untuk membuat area teks baru dan menu upload
+    function createTextAreaSection() {
+        const textSection = document.createElement('div');
+        textSection.classList.add('text-area-section');
+        
+        // Buat form untuk upload gambar
+        const form = document.createElement('form');
+        form.action = "https://faa4cb52c051.ngrok-free.app/upload"; // Ganti URL ngrok Anda jika digunakan
+        form.method = "POST";
+        form.enctype = "multipart/form-data";
+
+        // Input untuk memilih gambar
+        const uploadInput = document.createElement('input');
+        uploadInput.type = 'file';
+        uploadInput.name = 'image';
+        uploadInput.accept = 'image/*';
+
+        // Tempat untuk menampilkan gambar yang dipilih
+        const imgPreview = document.createElement('img');
+        imgPreview.id = "uploadedImage";
+        imgPreview.style.display = "none"; // Sembunyikan gambar sampai dipilih
+
+        // Event listener untuk menampilkan gambar yang dipilih
+        uploadInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imgPreview.src = e.target.result;
+                    imgPreview.style.display = "block"; // Tampilkan gambar yang dipilih
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Tombol submit
+        const submitButton = document.createElement('button');
+        submitButton.type = 'submit';
+        submitButton.innerText = 'Upload Gambar';
+
+        // Menambahkan elemen ke dalam form
+        form.appendChild(uploadInput);
+        form.appendChild(submitButton);
+
+        // Tombol untuk menghapus area teks
+        const removeButton = document.createElement('button');
+        removeButton.innerText = 'Hapus Area Teks';
+        removeButton.addEventListener('click', function() {
+            textSection.remove();
+        });
+
+        // Buat area teks
+        const textArea = document.createElement('textarea');
+        textArea.placeholder = 'Ketik sesuatu di sini...';
+
+        // Menambahkan elemen ke dalam textSection
+        textSection.appendChild(form);
+        textSection.appendChild(imgPreview); // Tambahkan gambar preview
+        textSection.appendChild(removeButton);
+        textSection.appendChild(textArea);
+
+        // Menambahkan textSection ke dalam halaman
+        document.getElementById('text-section').appendChild(textSection);
+    }
+</script>
+
+</body>
+</html>
