@@ -2,7 +2,11 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors'); // Import CORS package
 const app = express();
+
+// Gunakan CORS untuk mengizinkan semua domain
+app.use(cors());
 
 // Setup multer untuk menyimpan file di folder "uploads"
 const storage = multer.diskStorage({
@@ -25,7 +29,7 @@ if (!fs.existsSync('uploads')) {
 app.post('/upload', upload.single('image'), (req, res) => {
     const uploadedFile = req.file;
     if (uploadedFile) {
-        res.send(`<h3>Gambar berhasil di-upload!</h3><img src="/uploads/${uploadedFile.filename}" style="max-width: 100%;">`);
+        res.send(uploadedFile.filename); // Kirim nama file gambar yang di-upload
     } else {
         res.status(400).send('Tidak ada gambar yang di-upload');
     }

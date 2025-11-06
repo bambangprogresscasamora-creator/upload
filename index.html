@@ -95,7 +95,8 @@
         
         // Buat form untuk upload gambar
         const form = document.createElement('form');
-        form.action = "https://faa4cb52c051.ngrok-free.app/upload"; // Ganti URL ngrok Anda jika digunakan
+        form.id = 'uploadForm';
+        form.action = "https://a3dffbc8c808.ngrok-free.app/upload"; // Ganti URL ngrok Anda jika digunakan
         form.method = "POST";
         form.enctype = "multipart/form-data";
 
@@ -151,6 +152,34 @@
 
         // Menambahkan textSection ke dalam halaman
         document.getElementById('text-section').appendChild(textSection);
+
+        // Tambahkan event listener untuk form submit menggunakan AJAX
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah form submit default
+
+            const formData = new FormData(form);
+
+            // Mengirim form menggunakan AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', form.action, true);
+
+           xhr.onload = function() {
+    if (xhr.status === 200) {
+        // Menampilkan gambar yang sudah di-upload
+        const img = document.createElement('img');
+        img.src = '/uploads/' + xhr.responseText; // Menampilkan gambar yang di-upload
+        img.style.maxWidth = '100%';
+        textSection.appendChild(img); // Tambahkan gambar yang sudah di-upload ke halaman
+        
+        // Menambahkan konfirmasi sukses upload
+        alert('Gambar berhasil di-upload!');
+    } else {
+        alert('Upload gagal');
+    }
+};
+
+            xhr.send(formData); // Mengirim form ke server
+        });
     }
 </script>
 
